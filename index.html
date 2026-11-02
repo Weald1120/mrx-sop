@@ -30,16 +30,17 @@
     .doc-head h1 { font-size: 30px; font-weight: 700; letter-spacing: 1px; color: #1f2329; }
     .doc-head .meta { margin-top: 10px; font-size: 13px; color: #8a919c; }
     .wx-bar {
-        display: flex; align-items: center; gap: 12px; margin-top: 16px;
+        display: flex; align-items: center; gap: 10px; margin-top: 16px;
         padding: 12px 14px; background: #edfcf2; border: 1px solid #cfe8d8; border-radius: 12px;
     }
-    .wx-avatar-link { flex: none; display: block; }
+    .wx-avatar-link { display: flex; align-items: center; flex: none; line-height: 0; }
     .wx-avatar {
         width: 52px; height: 52px; border-radius: 10px; display: block;
-        border: 1px solid #bfe8cf; cursor: pointer;
+        border: 1px solid #bfe8cf; cursor: pointer; object-fit: cover;
     }
-    .wx-name { font-size: 15px; font-weight: 700; color: #1a8f52; line-height: 1.4; }
-    .wx-id { font-size: 14px; color: #2b2f36; margin-top: 2px; }
+    .wx-info { flex: 1; min-width: 0; }
+    .wx-name { font-size: 15px; font-weight: 700; color: #1a8f52; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wx-id { font-size: 13px; color: #2b2f36; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .wx-id b { letter-spacing: .3px; }
     .wx-copy {
         display: inline-block; margin-left: 8px; background: #23c267; color: #fff;
