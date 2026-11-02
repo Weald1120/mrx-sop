@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>迷人秀起号SOP</title>
+<title>迷人秀短视频和直播起号SOP</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -179,6 +179,18 @@
         font-size: 13px;
         color: #9aa1ab;
     }
+    .wx-bar {
+        display: flex; align-items: center; gap: 12px;
+        background: #fff; border: 1px solid #cfe8d8; border-radius: 14px;
+        padding: 12px 14px; margin: 12px 4px 2px; box-shadow: 0 1px 4px rgba(31,35,41,.05);
+    }
+    .wx-avatar { width: 52px; height: 52px; border-radius: 10px; display: block; border: 1px solid #bfe8cf; cursor: pointer; flex: none; }
+    .wx-name { font-size: 15px; font-weight: 700; color: #1a8f52; line-height: 1.4; }
+    .wx-id { font-size: 13.5px; color: #2b2f36; margin-top: 2px; }
+    .wx-copy { display: inline-block; margin-left: 8px; background: #23c267; color: #fff; font-size: 12.5px; padding: 3px 10px; border-radius: 20px; cursor: pointer; vertical-align: 1px; }
+    .toast { position: fixed; left: 50%; bottom: 12%; transform: translateX(-50%); background: rgba(31,35,41,.92); color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 14px; z-index: 10000; display: none; max-width: 80%; text-align: center; }
+    .toast.show { display: block; }
+    .watermark { position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 9999; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='230'%20height='160'%3E%3Ctext%20x='10'%20y='100'%20font-size='21'%20fill='%231a8f52'%20font-family='PingFang%20SC,Microsoft%20YaHei'%20transform='rotate(-26%20115%2080)'%3E%E8%BF%B7%E4%BA%BA%E7%A7%80%3C/text%3E%3C/svg%3E"); background-repeat: repeat; }
     @media (max-width: 640px) {
         .page { padding: 28px 20px 36px; }
         .imgs { grid-template-columns: 1fr; }
@@ -187,11 +199,21 @@
 </style>
 </head>
 <body>
+<div class="watermark"></div>
 <div class="page">
 
     <div class="doc-head">
-        <h1>迷人秀短视频起号SOP</h1>
+        <h1>迷人秀短视频和直播起号SOP</h1>
         <div class="meta">流程梳理版 · v3</div>
+        <div class="wx-bar">
+            <a href="weixin://" onclick="copyWx(); return true;" style="display:block;flex:none">
+                <img class="wx-avatar" src="data:image/jpeg;base64,/9j//gAQTGF2YzYxLjE5LjEwMAD/2wBDAAgGBgcGBwgICAgICAkJCQoKCgkJCQkKCgoKCgoMDAwKCgoKCgoKDAwMDA0ODQ0NDA0ODg8PDxISEREVFRUZGR//xACNAAABBAMBAAAAAAAAAAAAAAAABgUIAQIHBAMBAQEBAQEBAAAAAAAAAAAAAAABAgQDBRAAAQMCAwMIBwgBBQEAAAAAAQIAAxEEBgUSMQchU3JhIhRRoUFxgZHTMjMTgiMVk2KxwUIXRHNjQ8M0EQEBAAMAAwEAAwEBAAAAAAAAAQMCESESBDFBURNhIv/AABEIAHgAeAMBEgACEgADEgD/2gAMAwEAAhEDEQA/AN9MYAMYAMYAPgzCUikYNKipZYDpN3bpNDIA2SjnGqKeu2W3Kp8WzUc5Wqgee2W3Kp8Wz0eeKB47Zb8oPFs6lIiQpayEpSCSTsADzxoDx2y35QeL0ziTfHY5Rcm3tYDcaagrBGmo7nOVeg3P2u35QeLjdYb7M0VeKM1vGq3J4JHxAe2jnKdBJDtlvyqfFovDWJ7HE9qJ7ZQCh8cZI1JPoblXotLTtltyo8WzPPGkDz2y25VPi2Yh540Kee223Kp8Wy0c4qB+RNHL8CgpsCVqjVqSSCHlsUomPAgGMAGMAbcw+aOYHWYfOHMD1EgOOjt0BQDtgFgO2AIXe3ms2U4XlMCyhc0iI6p26VGiuPobvjrJkZ7h68tlCqkp+ojnIqR4uU2vJ0a1nbxGfLcqlxBNFbRK+8UeKjx9bX+C8F3tmtN2USVrTUlQTTvrV+eTJNY5suWWX+1w47l247vn+f1/9EDeZacomkgl+KNRBNDx48HuLE2B0Zt144yqWnWI4E1/se+j6dNptHDjy2OHJpcd5Y+plwTI15u1zufLMSWyEqV9K5V9JSQeBKjwNOhqjBGBJLHFEa5uMdugr+2KEP6P48cWT3fIdGfB/nW8Sx9A5xTthUVR2wDAh5FlA/seAAxgAxgDbmHzhzQ6zD5w5gdiz8FcjtlBbGQRRLogllVGK9K0lKuIUKH0NmzjEuVZLGVXV1GCB8CVAqPRQGrzfM4LLyyo8JNGWmWEA6VAlKRt49zYrPMZsTwrzS1FERLKUp/SD5v5+bT02e3149r5j6vy5f8AXX/sc3xZNZ4d9pmOmWQqEg6v9tgfJovszWmAICAT1ikcT7HyWRddbttOR9Laerxybya32pSZRbIQFXNOvKdvQ0taY4scpv5cozCQRKioESeVKeb7fnx+uvXtpr66x8/68vvtyfw8cl7teF8C+WzvbW+QF288coOzSoE+wGroz/A7KutjsFRk6dFA7YA+seBAMYAMYA23/wA4cwOsw+cOYHqJAcrHoBhPKmCKSVZomNJUfQBVpneHmv4Thu8lBopYESft9U/uwDVWJ96ec5hcT21mRawIWpAUj41AGldQptevozx47S4AyuLi5u5DJPKuVZ4krJP7sI82Abk3N5jNHlGZxQxdoljBUiEn4lUJAac3SZv+F5hmKK012kkifTGjyd8bTlJ5J3W+BsHd9iHN84vszVcWUUUFuookIACopONEpP8AYd9Gm93Ofy219n6JV1Rcxz3JHkgx1p61VedcWmPzI9NvxvbNtk8WvONc40l7XiC/kr/2kD1EttvpjcXlzKeOuaQ+orNHmoo98vzjMssWFWl1NFTyCiA+EqCQwDd+7XHd7n08mX35SqRCNSFgUUQO/v4vVGCs3OU4hsp66UrkEch/QTxYBKR4hQUlKhsUkH2iroozYwB+Y8CAYwAYwBtzD5o5odZh80c0OwgOQl4EugNW777z6dhldslXzZZStPQkApq2DfTda84tLfk4Erpz0sA1gtelaXz3JoUnpYA4JNQ/CNfAMAdMozBWWXZmSaaopIq9wkFKtuUp3VAKa1zP8Piulg6frwSxI71GTapXr2Nhnn1QIB6xO1Xl1fJP8v02/Et8Mz9Vz6qdPe/FSqB4FGMsu0d755FVI6S4A6NWkoUngQUmvrDrT1XQEtMhuu2ZTYz1B1wI4+hIH8NO7srk3GE8s1Gqo0KST9ssAWgLwSXRQo2PAgGMAGMAasyP3wH6AzMwfqpV5FIDsWCuAvEq4j0ugI+b2rjXimTjq02sCQE8aUr4vh3lRacT3m3iEq9tXBAnMpsU5nemFXACCaT1xoqH0YbXBa3N1NKSCLeRKPStBDiga9JSeHkX6J2nuJqwCwrUKHa7ISWAYGWqAknZX1PEJBq1qIrzWp5/Trt2MA9stte0JvVkV+laySDo00fZh+7Ta3NxqAUJbdcQSfOtGANQk1pGmnoq8wgDWdNOsr93QEgN0Mwlw0lIPGOXSR3Egl+e6FJRh0mlNU1R08Cyg2Kl0lkVCmY8gBjABjAPG4t03CNKuHcR5P2aXgBnXlE1eqpFOkt4evZkGksb7ocQ4jzpd9aXGWxwqhjRSVcoXqTWpolBD3a71ARsO4LFwJ03mUgHb97N7tyTd6gI2jcFiwf6vKPzZvduSTvUBG87hMWeV3lH5k3u3JB3qAjedweKhQpu8pr51km8Pu3JB3qAjarcHi0jhd5R+ZN7tySd6gI1f4AxeCCm8ygEf8sw/wDJyVd6gI2/4CxbT/68or/uz+7ckneoBD4SwVeYeyW0sJJLdUsST9RSFHSpRJNRUAtcO9QDZbZVoIMqgaf1Gwtzd6gBjABjABjABjABjABjABjABjABjABjABjABjABjABjABjAP//Z" alt="魏杰微信" />
+            </a>
+            <div>
+                <div class="wx-name">迷人秀流量培训教练-魏杰</div>
+                <div class="wx-id">微信号：<b>yueboguoji1238</b><span class="wx-copy" onclick="copyWx()">复制微信号</span></div>
+            </div>
+        </div>
     </div>
 
     <!-- 步骤 1 -->
@@ -394,5 +416,26 @@
     </div>
 
 </div>
+<div class="toast" id="toast"></div>
+<script>
+function copyWx() {
+    var id = 'yueboguoji1238';
+    var ok = false;
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(id); ok = true; }
+    } catch (e) {}
+    if (!ok) {
+        var ta = document.createElement('textarea');
+        ta.value = id; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); ok = true; } catch (e) {}
+        document.body.removeChild(ta);
+    }
+    var t = document.getElementById('toast');
+    t.textContent = ok ? '微信号已复制：' + id + '，打开微信添加好友' : '微信号：' + id;
+    t.className = 'toast show';
+    setTimeout(function () { t.className = 'toast'; }, 2200);
+}
+</script>
 </body>
 </html>
