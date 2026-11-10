@@ -15,37 +15,76 @@
 <meta itemprop="image" content="https://weald1120.github.io/mrx-sop/share-cover.jpg" />
 
 <style>
+    :root {
+        --main: #F5A300;
+        --main-lt: #FFC742;
+        --main-dp: #C2700A;
+        --on-main: #3D2500;
+        --soft: #FFF7E3;
+        --soft2: #FFF2D2;
+        --line: #F2DFB4;
+        --bg: #FFFBF2;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
         font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-        background: #f1faf4; color: #2b2f36; line-height: 1.85;
+        background: var(--bg); color: #2b2f36; line-height: 1.85;
         padding: 32px 16px 64px;
     }
     .page {
         max-width: 860px; margin: 0 auto; background: #ffffff;
-        border-radius: 16px; box-shadow: 0 6px 28px rgba(31,35,41,.08);
+        border-radius: 16px; box-shadow: 0 6px 28px rgba(120,80,0,.09);
         padding: 48px 52px 56px;
     }
-    .doc-head { border-bottom: 3px solid #23c267; padding-bottom: 20px; margin-bottom: 36px; }
+    .doc-head { border-bottom: 3px solid var(--main); padding-bottom: 20px; margin-bottom: 26px; }
     .doc-head h1 { font-size: 30px; font-weight: 700; letter-spacing: 1px; color: #1f2329; }
+    .doc-head h1 .nb { white-space: nowrap; }
     .doc-head .meta { margin-top: 10px; font-size: 13px; color: #8a919c; }
     .wx-bar {
         display: flex; align-items: center; gap: 10px; margin-top: 16px;
-        padding: 12px 14px; background: #edfcf2; border: 1px solid #cfe8d8; border-radius: 12px;
+        padding: 12px 14px; background: var(--soft); border: 1px solid var(--line); border-radius: 12px;
     }
     .wx-avatar-link { display: flex; align-items: center; flex: none; line-height: 0; }
     .wx-avatar {
         width: 56px; height: 56px; border-radius: 50%; display: block;
-        border: 1px solid #bfe8cf; cursor: pointer; object-fit: cover; object-position: center 18%;
+        border: 1px solid var(--line); cursor: pointer; object-fit: cover; object-position: center 18%;
     }
     .wx-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-    .wx-name { font-size: 15px; font-weight: 700; color: #1a8f52; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wx-name { font-size: 15px; font-weight: 700; color: var(--main-dp); line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .wx-id { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #2b2f36; line-height: 1.4; }
     .wx-id-text { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .wx-id b { letter-spacing: .3px; }
     .wx-copy {
-        flex: none; background: #23c267; color: #fff; font-size: 12px; padding: 3px 10px;
-        border-radius: 14px; cursor: pointer;
+        flex: none; background: linear-gradient(135deg, var(--main-lt), var(--main));
+        color: #fff; font-size: 12px; padding: 3px 10px;
+        border-radius: 14px; cursor: pointer; text-shadow: 0 1px 2px rgba(140,80,0,.35);
+    }
+
+    /* ---------- 分类切换 ---------- */
+    .tabs {
+        display: flex; gap: 8px; padding: 5px; background: var(--soft);
+        border: 1px solid var(--line); border-radius: 14px; margin-bottom: 30px;
+    }
+    .tab {
+        flex: 1; text-align: center; padding: 11px 8px; border-radius: 10px;
+        font-size: 16px; font-weight: 700; color: #9a7c40; cursor: pointer;
+        border: none; background: transparent; font-family: inherit;
+        transition: background .18s, color .18s, box-shadow .18s;
+        line-height: 1.4;
+    }
+    .tab:hover { color: var(--main-dp); }
+    .tab.on {
+        background: linear-gradient(135deg, var(--main-lt), var(--main));
+        color: #fff; box-shadow: 0 3px 10px rgba(215,140,0,.32);
+        text-shadow: 0 1px 2px rgba(140,80,0,.3);
+    }
+    .panel { display: none; }
+    .panel.on { display: block; }
+
+    .wx-copy .mini { display: none; }
+    @media (max-width: 430px) {
+        .wx-copy .full { display: none; }
+        .wx-copy .mini { display: inline; }
     }
     .toast {
         position: fixed; left: 50%; bottom: 12%; transform: translateX(-50%);
@@ -57,43 +96,45 @@
     .watermark {
         position: fixed; left: 0; top: 0; right: 0; bottom: 0;
         z-index: 9999; pointer-events: none; opacity: .07;
-        background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='230'%20height='160'%3E%3Ctext%20x='10'%20y='100'%20font-size='21'%20fill='%231a8f52'%20font-family='PingFang%20SC,Microsoft%20YaHei'%20transform='rotate(-26%20115%2080)'%3E%E8%BF%B7%E4%BA%BA%E7%A7%80%3C/text%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='230'%20height='160'%3E%3Ctext%20x='10'%20y='100'%20font-size='21'%20fill='%23C2700A'%20font-family='PingFang%20SC,Microsoft%20YaHei'%20transform='rotate(-26%20115%2080)'%3E%E8%BF%B7%E4%BA%BA%E7%A7%80%3C/text%3E%3C/svg%3E");
         background-repeat: repeat;
     }
     .mod { margin-bottom: 44px; }
     .mod-title { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
     .mod-num {
         flex: none; width: 38px; height: 38px; border-radius: 50%;
-        background: #23c267; color: #fff; font-size: 17px; font-weight: 700;
+        background: linear-gradient(135deg, var(--main-lt), var(--main));
+        color: #fff; font-size: 17px; font-weight: 700;
         display: flex; align-items: center; justify-content: center;
+        text-shadow: 0 1px 2px rgba(140,80,0,.35);
     }
     .mod-title h2 { font-size: 21px; font-weight: 700; color: #1f2329; }
-    .sub { font-size: 17px; font-weight: 700; color: #1a8f52; margin: 20px 0 8px; }
+    .sub { font-size: 17px; font-weight: 700; color: var(--main-dp); margin: 20px 0 8px; }
     .mod p { margin: 8px 0; }
     ul, ol { padding-left: 26px; margin: 10px 0; }
     li { margin: 8px 0; }
     .tip {
-        background: #edfcf2; border-left: 4px solid #23c267; border-radius: 6px;
+        background: var(--soft); border-left: 4px solid var(--main); border-radius: 6px;
         padding: 12px 16px; margin: 14px 0; font-size: 15px;
     }
     .def {
-        background: #e6f9ee; border-left: 4px solid #1a8f52; border-radius: 6px;
-        padding: 10px 16px; margin: 10px 0 10px 26px; font-size: 14.5px; color: #1f7a4d;
+        background: var(--soft2); border-left: 4px solid var(--main-dp); border-radius: 6px;
+        padding: 10px 16px; margin: 10px 0 10px 26px; font-size: 14.5px; color: #7a4d00;
     }
     .warn {
-        background: #fff8e6; border-left: 4px solid #f0a020; border-radius: 6px;
+        background: #fff3e6; border-left: 4px solid #e2622a; border-radius: 6px;
         padding: 12px 16px; margin: 14px 0; font-size: 15px;
     }
     table.info {
         border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px;
     }
     table.info th, table.info td {
-        border: 1px solid #cfe8d8; padding: 9px 12px; text-align: left;
+        border: 1px solid var(--line); padding: 9px 12px; text-align: left;
     }
-    table.info th { background: #edfcf2; color: #1a8f52; font-weight: 700; }
+    table.info th { background: var(--soft); color: var(--main-dp); font-weight: 700; }
     .imgs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0 8px; }
     .img-card {
-        background: #f5fcf8; border: 1px solid #e6e8eb; border-radius: 12px;
+        background: #FFFCF5; border: 1px solid #e6e8eb; border-radius: 12px;
         padding: 10px 10px 12px; text-align: center;
     }
     .img-card img { width: 100%; border-radius: 8px; display: block; }
@@ -109,14 +150,21 @@
     .video-single .cap { margin-top: 8px; font-size: 13px; color: #6b7280; }
     .url-hint { font-size: 12px; color: #9aa1ab; margin: 2px 0 6px; word-break: break-all; }
     .site-link {
-        display: inline-block; background: #23c267; color: #ffffff; text-decoration: none;
+        display: inline-block; background: linear-gradient(135deg, var(--main-lt), var(--main));
+        color: #ffffff; text-decoration: none;
         padding: 11px 24px; border-radius: 8px; font-size: 16px; font-weight: 600; margin: 8px 0;
+        text-shadow: 0 1px 2px rgba(140,80,0,.3);
     }
-    .divider { border: none; border-top: 2px dashed #bfe8cf; margin: 36px 0 30px; }
+    .divider { border: none; border-top: 2px dashed var(--line); margin: 36px 0 30px; }
     .foot { margin-top: 40px; padding-top: 18px; border-top: 1px dashed #d8dce2; font-size: 13px; color: #9aa1ab; }
+    .draft {
+        background: #fff8e8; border: 1px dashed #e8b64a; border-radius: 10px;
+        padding: 12px 16px; margin: 0 0 26px; font-size: 13.5px; color: #8a6412;
+    }
     @media (max-width: 640px) {
         .page { padding: 28px 20px 36px; }
         .imgs { grid-template-columns: 1fr; }
+        .tab { font-size: 14px; padding: 10px 4px; }
     }
 </style>
 </head>
@@ -125,7 +173,7 @@
 <div class="page">
 
     <div class="doc-head">
-        <h1>迷人秀短视频和直播起号SOP</h1>
+        <h1>迷人秀短视频和直播<span class="nb">起号SOP</span></h1>
         <div class="meta">模块化流程版 · 视频点击即播</div>
         <div class="wx-bar">
             <a class="wx-avatar-link" href="weixin://" onclick="copyWx(); return true;">
@@ -133,10 +181,19 @@
             </a>
             <div class="wx-info">
                 <div class="wx-name">迷人秀流量培训教练-魏杰</div>
-                <div class="wx-id"><span class="wx-id-text">微信号：<b>yueboguoji1238</b></span><span class="wx-copy" onclick="copyWx()">复制微信号</span></div>
+                <div class="wx-id"><span class="wx-id-text">微信号：<b>yueboguoji1238</b></span><span class="wx-copy" onclick="copyWx()"><span class="full">复制微信号</span><span class="mini">复制</span></span></div>
             </div>
         </div>
     </div>
+
+    <!-- 分类切换 -->
+    <div class="tabs" role="tablist">
+        <button class="tab on" role="tab" data-tab="short" aria-selected="true">短视频起号流程</button>
+        <button class="tab" role="tab" data-tab="live" aria-selected="false">直播流程</button>
+    </div>
+
+    <!-- ========== 分类一：短视频起号 ========== -->
+    <div class="panel on" id="panel-short">
 
     <!-- 全流程总览 -->
     <div class="mod">
@@ -330,7 +387,163 @@
         <div class="warn">注意：<strong>该打码的打码，不要带品牌 logo、七日搜 logo</strong>。然后 <strong>@他们</strong>。</div>
     </div>
 
-    <div class="foot">说明：当前为框架版本，更细的执行细节后续继续补充。</div>
+    </div><!-- /panel-short -->
+
+    <!-- ========== 分类二：直播流程 ========== -->
+    <div class="panel" id="panel-live">
+
+    <div class="draft">直播这套流程还在持续补充，先把模块 1 → 6 的顺序走通，细节会陆续更新。有不清楚的地方直接问魏杰。</div>
+
+    <!-- 总览 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">总</div><h2>直播全流程总览</h2></div>
+        <div class="tip">直播和短视频是两套打法：短视频是「养号 → 引流」，直播是「开播前准备 → 开播中控节奏 → 下播复盘」。按模块 1 → 6 走。</div>
+        <table class="info">
+            <tr><th>阶段</th><th>包含模块</th><th>关键动作</th></tr>
+            <tr><td>开播前</td><td>模块 1：账号与权限；模块 2：场景设备；模块 3：贴片与封面</td><td>确认能播、画面能看</td></tr>
+            <tr><td>开播中</td><td>模块 4：开播设置；模块 5：直播节奏</td><td>留住人、讲清楚、促成交</td></tr>
+            <tr><td>下播后</td><td>模块 6：复盘</td><td>看数据、找问题、下一场改</td></tr>
+        </table>
+    </div>
+    <hr class="divider" />
+
+    <!-- 模块 1 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">1</div><h2>模块 1｜账号与开播权限</h2></div>
+        <p>先确认一件事：<strong>你用哪个号播</strong>。用错号，后面全白干。</p>
+        <table class="info">
+            <tr><th>账号类型</th><th>播什么</th><th>能不能挂团购</th></tr>
+            <tr><td>蓝 V 号</td><td>七日嗖视频 / 七日嗖直播</td><td>可以</td></tr>
+            <tr><td>职人号</td><td>迷人秀直播 + 七日嗖日常对标视频</td><td><strong>严禁挂团购</strong></td></tr>
+        </table>
+        <div class="warn"><strong>职人号直播严禁挂团购</strong>，这条是红线，被查到号就没了。迷人秀直播只用职人号，且不挂任何团购链接。</div>
+        <div class="sub">1-1 开播前自查清单</div>
+        <ul>
+            <li><strong>实名认证</strong>：已完成，且是本人。</li>
+            <li><strong>职人号绑定</strong>：已认证为企业员工号，并绑定门店。</li>
+            <li><strong>直播权限</strong>：之前没被限播、没被扣分、没有违规记录。</li>
+            <li><strong>保证金</strong>：该交的交了（部分类目要求）。</li>
+        </ul>
+        <div class="tip">这四项任何一项没通过，都开不了播或者开播就掉。第一次播之前，提前一天挨个点一遍确认。</div>
+    </div>
+    <hr class="divider" />
+
+    <!-- 模块 2 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">2</div><h2>模块 2｜直播间场景与设备</h2></div>
+        <p>手机直播不需要多贵的设备，但<strong>画面不能脏、声音不能糊</strong>，这两条决定别人停不停下来。</p>
+        <div class="sub">2-1 画面</div>
+        <table class="info">
+            <tr><th>项目</th><th>要求</th></tr>
+            <tr><td>背景</td><td>干净、无杂物，别放生活用品；有品牌元素更好</td></tr>
+            <tr><td>机位</td><td>手机竖屏，人物占画面 1/2 ~ 2/3，眼睛在画面上 1/3 处</td></tr>
+            <tr><td>灯光</td><td>正面主灯 + 两侧补光；<strong>别用顶灯直打</strong>，脸会发黑出阴影</td></tr>
+            <tr><td>画质</td><td>原相机或抖音开播，不要开重度美颜，磨皮过重脸会糊</td></tr>
+        </table>
+        <div class="sub">2-2 声音</div>
+        <ul>
+            <li>用<strong>无线麦克风</strong>，别用手机自带麦，房间回音重。</li>
+            <li>开播前<strong>试音</strong>：说两句，自己戴耳机听一遍有没有电流声、爆音。</li>
+            <li>环境保持安静，空调、风扇、电视声音都会进麦。</li>
+        </ul>
+        <div class="sub">2-3 开播前 10 分钟做的事</div>
+        <ul>
+            <li>手机充上电 / 插着电源（直播掉电极快）。</li>
+            <li>手机开<strong>勿扰模式</strong>，别让来电打断。</li>
+            <li>关掉其他后台 App，尤其是占内存的。</li>
+            <li>准备好水、纸巾、产品实物，放在手边。</li>
+        </ul>
+    </div>
+    <hr class="divider" />
+
+    <!-- 模块 3 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">3</div><h2>模块 3｜直播贴片与封面</h2></div>
+        <p>贴片就是屏幕上那几行字，作用是<strong>让人三秒内看懂你在讲什么</strong>。</p>
+        <div class="sub">3-1 用贴片生成器做</div>
+        <p>选好模板 → 填文字 → 下载图片 → 在抖音直播伴侣/开播页里设为贴片或背景。</p>
+        <a class="site-link" href="https://weald1120.github.io/tiepian/" onclick="goTo(this.href);return false;">打开直播贴片生成器</a>
+        <div class="url-hint">https://weald1120.github.io/tiepian/</div>
+        <div class="tip">贴片上的字要<strong>短</strong>：一行不超过 8 个字，手机上看得清。别堆一屏小字，镜头里全是马赛克。</div>
+        <div class="sub">3-2 封面</div>
+        <ul>
+            <li>封面用<strong>真人正脸 + 大字</strong>，比纯文字点击率高。</li>
+            <li>字要大、要少，缩略图状态下能看清。</li>
+            <li>不要出现品牌 logo、七日嗖 logo。</li>
+        </ul>
+    </div>
+    <hr class="divider" />
+
+    <!-- 模块 4 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">4</div><h2>模块 4｜开播设置</h2></div>
+        <p>开播前的设置项，逐条过一遍再点「开始直播」。</p>
+        <table class="info">
+            <tr><th>设置项</th><th>怎么做</th></tr>
+            <tr><td>直播标题</td><td>一句话说清楚播什么，带痛点词</td></tr>
+            <tr><td>直播封面</td><td>按模块 3-2 的标准做</td></tr>
+            <tr><td>直播话题</td><td>选和内容相关的高热度话题</td></tr>
+            <tr><td>可见范围</td><td>公开，不要设成仅好友</td></tr>
+            <tr><td>团购挂载</td><td><strong>职人号不放任何团购</strong></td></tr>
+            <tr><td>回放</td><td>按需开启，方便下播后复盘看自己</td></tr>
+        </table>
+        <div class="warn">开播前最后一次检查：<strong>画面里有没有出现不该出现的东西</strong>（logo、二维码、联系方式、别人的脸）。镜头扫到就删，别等被举报。</div>
+    </div>
+    <hr class="divider" />
+
+    <!-- 模块 5 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">5</div><h2>模块 5｜直播中的节奏</h2></div>
+        <p>直播间是<strong>循环</strong>的，不是讲一遍就完。每 15~20 分钟一个循环，人走了又来人，你要一直重复。</p>
+        <div class="sub">5-1 一个循环的四段</div>
+        <table class="info">
+            <tr><th>阶段</th><th>干什么</th><th>大概时长</th></tr>
+            <tr><td>暖场留人</td><td>打招呼、报今天讲什么、引导点赞关注</td><td>2~3 分钟</td></tr>
+            <tr><td>讲痛点</td><td>说目标人群的真实困扰，让她觉得「说的就是我」</td><td>3~4 分钟</td></tr>
+            <tr><td>讲产品</td><td>怎么用、为什么有用、谁用过、什么效果</td><td>5~8 分钟</td></tr>
+            <tr><td>促单</td><td>说清楚怎么买、有什么政策、催一次</td><td>2~3 分钟</td></tr>
+        </table>
+        <div class="sub">5-2 留人的三个动作</div>
+        <ul>
+            <li><strong>点名</strong>：看到新进来的直接喊名字打招呼，人被叫到就不走了。</li>
+            <li><strong>提问</strong>：抛问题让人扣字，「想减的扣 1」，互动数据起来了平台才给推人。</li>
+            <li><strong>预告</strong>：「等会儿讲 XX」，给个留下来的理由。</li>
+        </ul>
+        <div class="sub">5-3 说话的三个禁忌</div>
+        <div class="warn">
+            ① <strong>不说绝对化的话</strong>（最、第一、保证、根治）；<br />
+            ② <strong>不承诺效果和时间</strong>（几天瘦几斤）；<br />
+            ③ <strong>不引导私下交易</strong>（不要口播微信号、不要引导加微信付款）。
+        </div>
+        <div class="tip">违禁词这块，开播前把要讲的话先自己过一遍，拿不准的换成软一点的表达。被限流一次，这场就白播了。</div>
+    </div>
+    <hr class="divider" />
+
+    <!-- 模块 6 -->
+    <div class="mod">
+        <div class="mod-title"><div class="mod-num">6</div><h2>模块 6｜下播复盘</h2></div>
+        <p>下播别急着关手机，先把数据截个图，再看看回放。</p>
+        <div class="sub">6-1 看四个数</div>
+        <table class="info">
+            <tr><th>指标</th><th>看什么</th></tr>
+            <tr><td>场观人数</td><td>平台给了多少人进来</td></tr>
+            <tr><td>平均停留时长</td><td>内容留不留人，低于 1 分钟要改话术</td></tr>
+            <tr><td>互动率</td><td>评论、点赞、关注占比，低就是没引导</td></tr>
+            <tr><td>成交 / 加微</td><td>这场到底拿到了什么</td></tr>
+        </table>
+        <div class="sub">6-2 看回放</div>
+        <ul>
+            <li>挑<strong>掉人最快的那一段</strong>看，找出是哪句话把人讲跑了。</li>
+            <li>看自己有没有<strong>小动作</strong>（摸脸、看屏幕外、口头禅）。</li>
+            <li>记下这场讲得顺的几句话，下一场直接用。</li>
+        </ul>
+        <div class="sub">6-3 下一场改一件事</div>
+        <div class="tip">每场只改一个点：这场改开场话术，下场改产品讲解，再下场改促单节奏。<strong>一次改一样，才知道是哪个起了作用</strong>；一次全改，好了也不知道为什么好。</div>
+    </div>
+
+    </div><!-- /panel-live -->
+
+    <div class="foot">说明：直播流程为结构稿，细节持续补充。短视频流程按模块顺序执行即可。</div>
 
 </div>
 <div class="toast" id="toast"></div>
@@ -362,6 +575,27 @@ function copyWx() {
     t.className = 'toast show';
     setTimeout(function () { t.className = 'toast'; }, 2200);
 }
+(function () {
+    var tabs = document.querySelectorAll('.tab');
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener('click', function () {
+            var key = this.getAttribute('data-tab');
+            for (var j = 0; j < tabs.length; j++) {
+                tabs[j].classList.remove('on');
+                tabs[j].setAttribute('aria-selected', 'false');
+            }
+            this.classList.add('on');
+            this.setAttribute('aria-selected', 'true');
+            var panels = document.querySelectorAll('.panel');
+            for (var k = 0; k < panels.length; k++) {
+                panels[k].classList.remove('on');
+            }
+            var target = document.getElementById('panel-' + key);
+            if (target) { target.classList.add('on'); }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+})();
 </script>
 </body>
 </html>
